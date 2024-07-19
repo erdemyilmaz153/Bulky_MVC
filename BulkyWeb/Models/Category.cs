@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BulkyWeb.Models
 
@@ -11,12 +12,14 @@ namespace BulkyWeb.Models
     {
         // [Key] needs to be added here if you want to change 'Id' to anything. It states that this is the primary key.
         // Also, if we write CategoryId, it is also a primary key -- model name + Id
-        
+        [Key]
         public int Id { get; set; }
-
-        // We can add [Required] here as data annotation.
+        [Required]
+        [MaxLength(30)]
+        [DisplayName("Category Name")]
         public string Name { get; set; }
-
+        [DisplayName("Display Order")]
+        [Range(1,100, ErrorMessage = "The field Display Order must be between 1-100.")]
         public int DisplayOrder { get; set; }
     }
 }
