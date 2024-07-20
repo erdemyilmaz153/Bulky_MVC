@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace BulkyWeb.Models
+namespace Bulky.Models
 
 // all the columns we create in the table
 // prop + Enter to quickly create property (id, name, etc. in the class)
