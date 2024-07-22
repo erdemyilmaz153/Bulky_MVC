@@ -1,0 +1,50 @@
+﻿@model List<Product>
+<!--while using the model above, you need to write as Model as shown in the foreach loop below-->
+
+<div class="container" style="border: 1px solid;">
+    <div class="row pt-4 pb-3">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center p-3 bg-light border rounded">
+                <h2 class="mb-0">Product List</h2>
+                <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create New Product
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Price</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>@obj.Title</td>
+                    <td>@obj.ISBN</td>
+                    <td>@obj.ListPrice</td>
+                    <td>@obj.Author</td>
+                     <td></td>
+                    <td class="text-end">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-controller="Product" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash3-fill"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
