@@ -28,11 +28,11 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             ProductVM productVM = new()
             {
-                CategoryList = _unitOfWork.Category.GetAll().Select(u=> new SelectListItem
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
-                }), 
+                }),
                 Product = new Product()
             };
             if (id == null || id == 0)
@@ -43,7 +43,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             else
             {
                 //update
-                productVM.Product = _unitOfWork.Product.Get(u=>u.Id==id);
+                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
                 return View(productVM);
             }
 
@@ -59,15 +59,50 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                    if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+                    {
+                        //delete old img
+                        var oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            try
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log the exception
+                                Console.WriteLine($"Error deleting file: {ex.Message}");
+                            }
+                        }
+                        else
+                        {
+                            // Log that the file does not exist
+                            Console.WriteLine("Old image file does not exist.");
+                        }
+                    }
+
                     using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
+
                     productVM.Product.ImageUrl = @"\images\product\" + fileName;
                 }
-                _unitOfWork.Product.Add(productVM.Product);
+
+                if (productVM.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(productVM.Product);
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(productVM.Product);
+                }
+
                 _unitOfWork.Save();
-                TempData["success"] = "Product created successfully.";
+                TempData["success"] = "Product created/updated successfully.";
                 return RedirectToAction("Index");
             }
             else
@@ -79,36 +114,36 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 });
                 return View(productVM);
             }
- 
         }
+
 
         public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
             {
-                return NotFound();
-            }
-            Product? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
+                if (id == null || id == 0)
+                {
+                    return NotFound();
+                }
+                Product? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
 
-            if (productFromDb == null)
-            {
-                return NotFound();
+                if (productFromDb == null)
+                {
+                    return NotFound();
+                }
+                return View(productFromDb);
             }
-            return View(productFromDb);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
-        {
-            Product obj = _unitOfWork.Product.Get(u => u.Id == id);
-            if (obj == null)
+            [HttpPost, ActionName("Delete")]
+            public IActionResult DeletePOST(int? id)
             {
-                return NotFound();
+                Product obj = _unitOfWork.Product.Get(u => u.Id == id);
+                if (obj == null)
+                {
+                    return NotFound();
+                }
+                _unitOfWork.Product.Remove(obj);
+                _unitOfWork.Save();
+                TempData["success"] = "Product deleted successfully.";
+                return RedirectToAction("Index");
             }
-            _unitOfWork.Product.Remove(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Product deleted successfully.";
-            return RedirectToAction("Index");
-        }
 
-    }
-}
+        }
+    } 
