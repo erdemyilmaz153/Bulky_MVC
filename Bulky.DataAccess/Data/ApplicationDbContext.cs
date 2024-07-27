@@ -1,10 +1,10 @@
 ﻿using Bulky.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bulky.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
