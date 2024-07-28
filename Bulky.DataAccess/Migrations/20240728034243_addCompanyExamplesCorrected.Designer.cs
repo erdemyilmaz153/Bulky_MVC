@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240728033623_addCompaniesAdressMistakeCorrected")]
-    partial class addCompaniesAdressMistakeCorrected
+    [Migration("20240728034243_addCompanyExamplesCorrected")]
+    partial class addCompanyExamplesCorrected
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
