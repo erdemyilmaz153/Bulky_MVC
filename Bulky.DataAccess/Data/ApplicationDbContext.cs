@@ -15,6 +15,7 @@ namespace Bulky.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
 
@@ -27,6 +28,38 @@ namespace Bulky.Data
                 new Category { Id = 2, Name = "SciFi", DisplayOrder = 2 },
                 new Category { Id = 3, Name = "History", DisplayOrder = 3 }
                 );
+
+            modelBuilder.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    Name = "Tech Solution",
+                    StreetAddress = "123 Tech St",
+                    City = "TechC",
+                    PostalCode = "21343",
+                    State = "IL",
+                    PhoneNumber = "43536787887"
+                },
+                new Company
+                {
+                    Id = 2,
+                    Name = "Vivid Books",
+                    StreetAddress = "123 Books St",
+                    City = "BookC",
+                    PostalCode = "23245",
+                    State = "CL",
+                    PhoneNumber = "43536712345"
+                },
+                new Company
+                {
+                    Id = 3,
+                    Name = "Readers Club",
+                    StreetAddress = "325 Readers St",
+                    City = "ReadersC",
+                    PostalCode = "57854",
+                    State = "RL",
+                    PhoneNumber = "433546799"
+                });
 
             modelBuilder.Entity<Product>().HasData(
                 new Product
@@ -112,8 +145,8 @@ namespace Bulky.Data
                     Price100 = 20,
                     CategoryID = 3,
                     ImageUrl = ""
-                }
-                );
+                })
+                ;
 
         }
     }
