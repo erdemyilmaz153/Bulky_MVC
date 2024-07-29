@@ -168,6 +168,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 user.Name = Input.Name;
                 user.StreetAddress = Input.StreetAddress;
                 user.City = Input.City;
+                user.State = Input.State;
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
 
